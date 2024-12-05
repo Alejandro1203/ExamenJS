@@ -1,7 +1,21 @@
 let table = ''; //DOM de la tabla
 const form = document.forms[0]; //DOM del primer formulario
 let id = 0; //Numero identificador para cada fila de la tabla
-form.querySelector('select').disabled = true; //Desactiva los select
+
+// Recogida de todos los elementos del form para deshabilitarlos
+let elementos =  form.elements;
+for(let i = 0; i < elementos.length; i++) {
+    elementos[i].disabled = true;
+}
+
+// Prohíbe añadir letras al input de peso
+form.peso.addEventListener("keydown", e => {
+    const keys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
+
+    if(keys.indexOf(e.key) == -1) {
+        e.preventDefault();
+    }
+})
 
 // Recopila los valores en "table"
 animals.forEach(animal => {
@@ -24,40 +38,47 @@ tbody.querySelectorAll('button').forEach(e => {
     e.addEventListener('click',editarAnimal);
 })
 //Añadir evento (guardarFormulario) al boton Guardar del formulario
-form.querySelector('button').addEventListener('click',guardarFormulario);
+form.guardar.addEventListener('click', e => {
+    e.preventDefault();
+    guardarFormulario();
+});
 
 // Carga los datos de la fila en el formulario 
 function editarAnimal() {
+
+    // Habilita todos los elementos del form
+    for(let i = 0; i < elementos.length; i++) {
+        elementos[i].disabled = false;
+    }
+
+    const filas = document.querySelector("tbody").querySelectorAll("tr"); // Recoge las filas de la tabla
+
+    // Quita el resaltado de las filas
+    filas.forEach(f => {
+        f.classList.remove("table-success")
+    })
+
     let id = this.getAttribute('id').substring(1); //Recibe el numero ID de la fila
+    // Resalta la fila clickada
+    filas[id].classList.add("table-success")
+
     let especie = tbody.querySelector(`td[id=species${id}]`).innerHTML //Recibe la especie del animal
     let select = form.querySelector('select'); //DOM Select de razas
-    let values = []; //Lista de razas, cargadas mas adelante
-    //Habilitar
-    select.disabled = false;
     
     //Mostar datos en el formulario
     form.querySelector('input[name=nombre]').value = tbody.querySelector(`td[id=name${id}]`).innerText;
 
-    //Buscar raza
+    //Buscar raza y cargarlas
     switch (especie) {
         case "dog":
-            values.push("Pitbull");
-            values.push("Chihuahua");
-            values.push("Pastor aleman");
+            select.innerHTML = `<option>Pitbull</option><option>Chihuahua</option><option>Pastor Alemán</option>`;
             break;
         case "cat":
-            values.push("Ruso azul");
-            values.push("Egipcio");
-            values.push("Maine coone");
+            select.innerHTML = `<option>Ruso azul</option><option>Egipcio</option><option>Maine Coone</option>`;
             break;
         default:
             break;
     }
-    //Cargar razas
-    select.innerHTML = `<option value="">--Raza--</option>`;
-    values.forEach(e => {
-        select.innerHTML += `<option value="${e}">${e}</option>`;
-    });
     //Mostrar JSON
     mostrarDatos(tbody.querySelector(`td[id=name${id}]`).innerHTML);
 };
@@ -75,16 +96,35 @@ function mostrarDatos(nombre){
     form.querySelector('#json').innerHTML = component;
 }
 
-//⚠️Sin terminar, comprueba si los valores minimos se cumplen
+// Guarda datos en el JSON
 function guardarFormulario(){
-    let nombre = form.querySelector('input[name=nombre]').value;
-    let raza = form.querySelector('select[name=raza]').value;
-    let sexo = form.querySelector('input[name=sexo]').value;
-    let peso = form.querySelector('input[name=peso]').value;
-    let diagnostico = form.querySelector('textarea[name=diagnostico]').value;
-    if (!nombre || !raza || !sexo || !peso || !diagnostico){ //⚠️Este if puede esta mal
-        alert(`Dato no introducido`);
-    } else {
-        //Insertar valores en json (⚠️No finalizado)
+
+    // Comprueba si todos los valores están introducidos
+    if(form.sexOptions.value == "") {
+        return alert("Indique el sexo del animal")
+    } else if(form.peso.value == "") {
+        return alert("Indique el peso del animal")
+    } else if(!form.oidos.checked && !form.nariz.checked && !form.boca_pico.checked && !form.ojos.checked) {
+        return alert("Indique una revisión")
+    } else if(form.diagnostico.value == "") {
+        return alert("Indique un diagnóstico")
+    } else { // Si están introducidos los guarda
+
+        // Recogida de datos
+        let raza = form.querySelector('select[name=raza]').value;
+        let sexo = form.sexOptions.value;
+        let peso = form.peso.value;
+        let diagnostico = form.diagnostico.value;
+
+        // Búsqueda del animal a editar
+        const animalSeleccionado = animals.find(a => a.name == nombre);
+
+        // Introducción de datos al animal
+        animalSeleccionado.raza = raza;
+        animalSeleccionado.sexo = sexo;
+        animalSeleccionado.peso = peso;
+        animalSeleccionado.diagnostico = diagnostico;
+
+        mostrarDatos(nombre)
     }
 }
