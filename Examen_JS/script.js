@@ -1,12 +1,11 @@
 let table = ''; //DOM de la tabla
 const form = document.forms[0]; //DOM del primer formulario
 let id = 0; //Numero identificador para cada fila de la tabla
-
-// Recogida de todos los elementos del form para deshabilitarlos
+let buttonSelected = "none";
 let elementos =  form.elements;
-for(let i = 0; i < elementos.length; i++) {
-    elementos[i].disabled = true;
-}
+
+disabledElementos(true); //Deshabilita los elementos del formulario
+reiniciarElementos(); //Borra posible datos almacenados
 
 // Prohíbe añadir letras al input de peso
 form.peso.addEventListener("keydown", e => {
@@ -43,24 +42,50 @@ form.guardar.addEventListener('click', e => {
     guardarFormulario();
 });
 
+//FUNCIONES
+//Reinicia los datos del formulario
+function reiniciarElementos(){
+    form.querySelector('input[name=nombre]').innerText = ""
+    form.querySelector('select[name=raza]').innerHTML = "<option selected disabled>--Raza--</option>"
+    form.querySelector('input[id="sexOption1"]').checked = false;
+    form.querySelector('input[id="sexOption2"]').checked = false;
+    form.peso.value = ""
+    form.oidos.checked = false;
+    form.nariz.checked = false;
+    form.boca_pico.checked = false;
+    form.ojos.checked = false;
+    form.diagnostico.value = "";
+} 
+
+//Quita el resaltado verde de la tabla
+function quitarResaltado(){
+    if (buttonSelected != "none"){
+        document.querySelector(`button[id="${buttonSelected}"]`).parentElement.parentElement.classList.remove("table-success");
+    }
+}
+
+//Cambia el atributo "disabled" los elementos del formulario segun "estado"
+function disabledElementos(estado){
+    if (estado == true || estado == false){
+        for(let i = 0; i < elementos.length; i++) {
+            elementos[i].disabled = estado;
+        }
+    }
+}
+
 // Carga los datos de la fila en el formulario 
 function editarAnimal() {
 
     // Habilita todos los elementos del form
-    for(let i = 0; i < elementos.length; i++) {
-        elementos[i].disabled = false;
-    }
+    disabledElementos(false);
 
-    const filas = document.querySelector("tbody").querySelectorAll("tr"); // Recoge las filas de la tabla
-
-    // Quita el resaltado de las filas
-    filas.forEach(f => {
-        f.classList.remove("table-success")
-    })
+    // Quita el resaltado de la fila anterior
+    quitarResaltado()
+    // Registra la nueva fila y la resalta
+    buttonSelected = this.getAttribute('id');
+    document.querySelector(`button[id="${buttonSelected}"]`).parentElement.parentElement.classList.add("table-success");
 
     let id = this.getAttribute('id').substring(1); //Recibe el numero ID de la fila
-    // Resalta la fila clickada
-    filas[id].classList.add("table-success")
 
     let especie = tbody.querySelector(`td[id=species${id}]`).innerHTML //Recibe la especie del animal
     let select = form.querySelector('select'); //DOM Select de razas
@@ -111,6 +136,7 @@ function guardarFormulario(){
     } else { // Si están introducidos los guarda
 
         // Recogida de datos
+        let nombre = form.querySelector('input[name=nombre]').value;
         let raza = form.querySelector('select[name=raza]').value;
         let sexo = form.sexOptions.value;
         let peso = form.peso.value;
@@ -125,6 +151,9 @@ function guardarFormulario(){
         animalSeleccionado.peso = peso;
         animalSeleccionado.diagnostico = diagnostico;
 
-        mostrarDatos(nombre)
+        mostrarDatos(nombre); //Muestra los datos
+        reiniciarElementos(); //Reinicia elementos
+        disabledElementos(true); //Deshabilita el formulario
+        quitarResaltado(); //Elimina el resaltado de la fila de la tabla
     }
 }
