@@ -140,6 +140,10 @@ function guardarFormulario(){
         let raza = form.querySelector('select[name=raza]').value;
         let sexo = form.sexOptions.value;
         let peso = form.peso.value;
+        let oido = form.oidos.checked ? "sí" : "no";
+        let nariz = form.nariz.checked ? "sí" : "no";
+        let boca_pico = form.boca_pico.checked ? "sí" : "no";
+        let ojos = form.ojos.checked ? "sí" : "no";
         let diagnostico = form.diagnostico.value;
 
         // Búsqueda del animal a editar
@@ -149,6 +153,10 @@ function guardarFormulario(){
         animalSeleccionado.raza = raza;
         animalSeleccionado.sexo = sexo;
         animalSeleccionado.peso = peso;
+        animalSeleccionado.oido = oido;
+        animalSeleccionado.nariz = nariz;
+        animalSeleccionado.boca_pico = boca_pico;
+        animalSeleccionado.ojos = ojos;
         animalSeleccionado.diagnostico = diagnostico;
 
         mostrarDatos(nombre); //Muestra los datos
