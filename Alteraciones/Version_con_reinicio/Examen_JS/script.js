@@ -161,8 +161,8 @@ function guardarFormulario(){
 
         mostrarDatos(nombre); //Muestra los datos
         //Opciones adicionales
-    //    reiniciarElementos(); //Reinicia elementos
-    //    disabledElementos(true); //Deshabilita el formulario
-    //    quitarResaltado(); //Elimina el resaltado de la fila de la tabla
+    	reiniciarElementos(); //Reinicia elementos
+    	disabledElementos(true); //Deshabilita el formulario
+    	quitarResaltado(); //Elimina el resaltado de la fila de la tabla
     }
 }

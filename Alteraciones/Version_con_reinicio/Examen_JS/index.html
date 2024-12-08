@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <div class="container d-flex">
+        <div class="col-6" id="div-animales" style="margin-right: 5%;">
+            <h1>Animales</h1>
+            <table class="table table-border">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Especie</th>
+                        <th>Gustos</th>
+                        <th>No Gustos</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider"></tbody>
+            </table>
+        </div>
+        <div class="col-4" id="div-historia">
+            <h1>Historia Clínica</h1>
+            <form class="form">
+                <div class="mt-1">
+                    <input name="nombre" type="text" readonly/>
+                    <select name="raza">
+                        <option selected disabled>--Raza--</option>
+                    </select>
+                </div>
+                <div class="mt-4">
+                    <label>Sexo: </label>
+                    <input class="form-check-input" name="sexOptions" type="radio" id="sexOption1" value="macho"/>
+                    <label for="sexOption1">Macho</label>
+                    <input class="form-check-input" name="sexOptions" type="radio" id="sexOption2" value="hembra"/>
+                    <label for="sexOption1">Hembra</label>
+                </div>
+                <div class="mt-4">
+                    <input name="peso" type="text" placeholder="Peso"/>
+                </div>
+                <div class="mt-4">
+                    <label>Revisión</label>
+                </div>
+                <div class="mt-2">
+                    <input type="checkbox" id="oidos"/>
+                    <label for="oidos">Oídos</label>
+                    <input type="checkbox" id="nariz"/>
+                    <label for="nariz">Nariz</label>
+                    <input type="checkbox" id="boca_pico"/>
+                    <label for="boca_pico">Boca/Pico</label>
+                    <input type="checkbox" id="ojos"/>
+                    <label for="ojos">Ojos</label>
+                </div>
+                <div>
+                    <label>Diagnóstico</label>
+                    <textarea id="diagnostico" placeholder="diagnostico"></textarea>
+                </div>
+                <div class="container p-3">
+                    <button id="guardar" class="btn btn-light">Guardar</button>
+                </div>
+                <div id="json">
+                    
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+    crossorigin="anonymous"></script>
+<script src="animalsList.js"></script>
+<script src="script.js"></script>
+</html>
